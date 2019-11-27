@@ -23,6 +23,8 @@ export class DataMaComponent implements OnInit {
   public listStudent: any = null;
   public ad1: any = null;
   public major1: any = null;
+  public idgroup1: any = null;
+
   public datagroupchange1: any = null;
 
   constructor(
@@ -83,7 +85,8 @@ export class DataMaComponent implements OnInit {
       });
   }
 
-  public ongetmajor_and_ad(major: any = null, ad: any = null) {
+  public ongetmajor_and_ad(major: any = null, ad: any = null, groupid: any) {
+    this.idgroup1 = groupid;
     this.major1 = major;
     this.ad1 = ad;
     console.log(this.major1);
@@ -131,12 +134,14 @@ export class DataMaComponent implements OnInit {
 
   public insertxlsx(listStudent: Array<any>) {
     for (let i = 1; i < listStudent.length; i++) {
-      // console.log(JSON.stringify(listStudent[i]));
+      let data4 = { st_group: this.idgroup1 };
       this.http
         .get(
           this.rootApi +
             `insert/insertstudent.php?data=` +
-            JSON.stringify(listStudent[i])
+            JSON.stringify(listStudent[i]) +
+            "&data2=" +
+            JSON.stringify(data4)
         )
         .subscribe((data: any) => {
           // console.log(data);

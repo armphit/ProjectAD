@@ -145,7 +145,7 @@
             <mat-option
               *ngFor="let i of dataallgroup.record; let x = index"
               [value]="i.study_group_name"
-              (click)="ongetmajor_and_ad(i.name_th, i.name)"
+              (click)="ongetmajor_and_ad(i.name_th, i.name, i.study_group_id)"
             >
               {{ i.study_group_name }}
             </mat-option>
@@ -160,25 +160,41 @@
         &nbsp;&nbsp;<input type="file" (change)="onUpload($event)" />
         <br />
         <br />
-        <table class="table">
-          <thead thead class="thead-dark">
+        <table class="table" *ngIf="datastudent != null">
+          <thead class="thead-dark">
             <tr>
-              <th scope="col">#</th>
-              <th th scope="col">รหัสนักศึกษา</th>
-              <th th scope="col">คำนำหน้า</th>
-              <th th scope="col">ชื่อ</th>
-              <th th scope="col">นามสกุล</th>
-              <th th scope="col">สถานะ</th>
+              <th scope="col"></th>
+              <th scope="col">รหัสนักศึกษา</th>
+              <th scope="col">คำนำหน้า</th>
+              <th scope="col">ชื่อ</th>
+              <th scope="col">นามสกุล</th>
+              <th scope="col">สาขาวิชา</th>
+              <th scope="col">อาจารย์ที่ปรึกษา</th>
+              <th></th>
             </tr>
           </thead>
-          <tbody *ngIf="listStudent">
-            <tr *ngFor="let x of listStudent; let i = index" [hidden]="i == 0">
-              <th scope="row">{{ i }}</th>
-              <td>{{ x[0] }}</td>
-              <td>{{ x[1] }}</td>
-              <td>{{ x[2] }}</td>
-              <td>{{ x[3] }}</td>
-              <td>{{ x[4] }}</td>
+          <tbody>
+            <tr *ngFor="let i of datastudent.record; let x = index">
+              <th scope="row">{{ x + 1 }}</th>
+              <td>{{ i.STUDENT_NO }}</td>
+              <td>{{ i.Prefix }}</td>
+              <td>{{ i.NAME }}</td>
+              <td>{{ i.LNAME }}</td>
+              <td>{{ i.name_th }}</td>
+              <td>{{ i.name }}</td>
+              <td>
+                <span>
+                  <button mat-button color="link">
+                    <mat-icon> update </mat-icon>
+                  </button></span
+                >
+
+                <span>
+                  <button mat-button color="warn">
+                    <mat-icon> delete </mat-icon>
+                  </button></span
+                >
+              </td>
             </tr>
           </tbody>
         </table>
