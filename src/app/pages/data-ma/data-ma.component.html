@@ -1,0 +1,188 @@
+<mat-tab-group>
+  <mat-tab label="จัดการกลุ่มเรียน">
+    <br />
+    &nbsp;&nbsp;<button mat-flat-button color="warn" (click)="addnewgroup()">
+      <mat-icon style="size: 50px"> add_box </mat-icon>&nbsp;เพิ่มกลุ่มเรียน
+    </button>
+    <mat-form-field
+      class="example-full-width"
+      style="float: right;width: 500px;padding-right: 50px;"
+    >
+      <input matInput placeholder="ค้นหา" #se_gr />
+      <mat-icon matSuffix style="font-size: 1.2em">search</mat-icon>
+    </mat-form-field>
+    <br /><br />
+    <table class="table" *ngIf="datagroupchange1 != null">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">กลุ่มเรียน</th>
+          <th scope="col">สาขาวิชา</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let i of onsearchgroup(datagroupchange1.record, se_gr.value);
+            let x = index
+          "
+        >
+          <th scope="row">{{ x + 1 }}</th>
+          <td>
+            {{ i.study_group_name }}
+          </td>
+          <td>{{ i.name_th }}</td>
+          <td>
+            <span>
+              <button mat-button color="link">
+                <mat-icon> update </mat-icon>
+              </button></span
+            >
+
+            <span>
+              <button
+                mat-button
+                color="warn"
+                (click)="deletegroup(i.study_group_id)"
+              >
+                <mat-icon> delete </mat-icon>
+              </button></span
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- <table class="table" *ngIf="datagroupchange != null">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">กลุ่มเรียน</th>
+          <th scope="col">อาจารย์ที่ปรึกษา</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let i of datagroupchange.record; let x = index">
+          <th scope="row">{{ x + 1 }}</th>
+          <td>
+            {{ i.study_group_name }}
+          </td>
+          <td>{{ i.name }}</td>
+          <td>
+            <span>
+              <button mat-button color="link">
+                <mat-icon> update </mat-icon>
+              </button></span
+            >
+
+            <span>
+              <button
+                mat-button
+                color="warn"
+                (click)="deletegroup(i.study_group_id)"
+              >
+                <mat-icon> delete </mat-icon>
+              </button></span
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table> -->
+  </mat-tab>
+
+  <mat-tab label="จัดการอาจารย์">
+    <button mat-icon-button color="primary" (click)="addprefix()">
+      <mat-icon style="size: 50px"> add_box </mat-icon>
+    </button>
+    <mat-form-field
+      class="example-full-width"
+      style="float: right;width: 500px;padding-right: 50px;"
+    >
+      <input matInput placeholder="ค้นหา" />
+      <mat-icon matSuffix style="font-size: 1.2em">search</mat-icon>
+    </mat-form-field>
+    <table class="table" *ngIf="datagroup != null">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">กลุ่มเรียน</th>
+          <th scope="col">อาจารย์ที่ปรึกษา</th>
+          <th scope="col"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let i of datagroup.record; let x = index">
+          <th scope="row">{{ x + 1 }}</th>
+          <td>
+            {{ i.study_group_name }}
+          </td>
+          <td>{{ i.name }}</td>
+          <td>
+            <span>
+              <button
+                mat-icon-button
+                color="yellow"
+                (click)="addtest(i.name, i.id_ad)"
+              >
+                <mat-icon> update </mat-icon>
+              </button></span
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-tab>
+
+  <mat-tab label="จัดการข้อมูลนักศึกษา">
+    <div class="col-xs-4">
+      <div class="form-group">
+        &nbsp;&nbsp;<mat-form-field *ngIf="dataallgroup">
+          <mat-label>เลือกกลุ่มเรียน</mat-label>
+          <mat-select>
+            <mat-option
+              *ngFor="let i of dataallgroup.record; let x = index"
+              [value]="i.study_group_name"
+              (click)="ongetmajor_and_ad(i.name_th, i.name)"
+            >
+              {{ i.study_group_name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br />
+
+        &nbsp;&nbsp;&nbsp;&nbsp; สาขาวิชา : {{ major1 }}<br />
+        <br />&nbsp;&nbsp;&nbsp;&nbsp;อาจารย์ที่ปรึกษา : {{ ad1 }} &nbsp;
+
+        <br /><br />
+        &nbsp;&nbsp;<input type="file" (change)="onUpload($event)" />
+        <br />
+        <br />
+        <table class="table">
+          <thead thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th th scope="col">รหัสนักศึกษา</th>
+              <th th scope="col">คำนำหน้า</th>
+              <th th scope="col">ชื่อ</th>
+              <th th scope="col">นามสกุล</th>
+              <th th scope="col">สถานะ</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="listStudent">
+            <tr *ngFor="let x of listStudent; let i = index" [hidden]="i == 0">
+              <th scope="row">{{ i }}</th>
+              <td>{{ x[0] }}</td>
+              <td>{{ x[1] }}</td>
+              <td>{{ x[2] }}</td>
+              <td>{{ x[3] }}</td>
+              <td>{{ x[4] }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>

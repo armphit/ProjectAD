@@ -1,0 +1,39 @@
+<h1 mat-dialog-title>เพิ่มข้อมูล</h1>
+<mat-dialog-content>
+  <mat-form-field>
+    <input matInput placeholder="Input" />
+  </mat-form-field>
+  <br />
+  <mat-form-field>
+    <input matInput placeholder="Input" />
+  </mat-form-field>
+  &nbsp;
+  <mat-form-field>
+    <mat-select placeholder="Select">
+      <mat-option value="option">Option</mat-option>
+      <mat-option value="option">ascsacsac</mat-option>
+      <mat-option value="option">qqqq</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br />
+  <label
+    class="md-secondary md-raised md-button bring-forward"
+    md-ink-ripple
+    for="xFile"
+  >
+    <span>Select File</span>&nbsp;
+  </label>
+  <input
+    type="file"
+    ngf-select
+    ng-model="xFile"
+    name="xFile"
+    id="xFile"
+    class="file-input-hide"
+  />
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-stroked-button color="primary" (click)="save()">สู้</button>
+  <button mat-stroked-button mat-dialog-close color="warn">นอน</button>
+</mat-dialog-actions>

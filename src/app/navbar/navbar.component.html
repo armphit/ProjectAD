@@ -1,0 +1,103 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
+    <div class="text-center">
+      <img
+        src="./assets/rmuti.png"
+        class="w3-round"
+        style="width:40%; text-align: center"
+      />
+    </div>
+
+    <mat-nav-list>
+      <a
+        mat-list-item
+        [routerLink]="['/home']"
+        *ngIf="
+          service.userlogin == 'admin' ||
+          service.userlogin == 'student' ||
+          service.userlogin == 'teacher'
+        "
+        >หน้าแรก</a
+      >
+      <a
+        mat-list-item
+        [routerLink]="['/data-ma']"
+        *ngIf="service.userlogin == 'admin'"
+        >จัดการข้อมูล</a
+      >
+      <a
+        mat-list-item
+        [routerLink]="['/data-st']"
+        *ngIf="
+          service.userlogin == 'admin' ||
+          service.userlogin == 'student' ||
+          service.userlogin == 'teacher'
+        "
+        >ข้อมูลนักศึกษา</a
+      >
+      <a
+        mat-list-item
+        [routerLink]="['/plan-st']"
+        *ngIf="
+          service.userlogin == 'admin' ||
+          service.userlogin == 'student' ||
+          service.userlogin == 'teacher'
+        "
+        >แผนการเรียน</a
+      >
+      <a
+        mat-list-item
+        [routerLink]="['/consult']"
+        *ngIf="
+          service.userlogin == 'admin' ||
+          service.userlogin == 'student' ||
+          service.userlogin == 'teacher'
+        "
+        >การปรึกษา</a
+      >
+      <a
+        mat-list-item
+        [routerLink]="['/ob']"
+        *ngIf="service.userlogin == 'admin' || service.userlogin == 'teacher'"
+        >พฤติกรรมดีเด่นนักศึกษา</a
+      >
+      <a
+        mat-list-item
+        [routerLink]="['/ap']"
+        *ngIf="service.userlogin == 'admin' || service.userlogin == 'teacher'"
+        >แผนปฏิบัติงานการบริการให้คำปรึกษาและแนะแนว</a
+      >
+      <a
+        mat-list-item
+        [routerLink]="['/evaluate']"
+        *ngIf="service.userlogin == 'admin' || service.userlogin == 'teacher'"
+        >ผลประเมินความพึงพอใจ</a
+      >
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar>
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async"
+      >
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>
+        ระบบแฟ้มอาจารย์ที่ปรึกษา (สาขาวิศวกรรมคอมพิวเตอร์) <br />
+        Advisor file system
+      </span>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

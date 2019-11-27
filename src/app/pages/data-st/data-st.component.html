@@ -1,0 +1,24 @@
+<div>
+  <div>
+    &nbsp; &nbsp; &nbsp; &nbsp;กลุ่มเรียน :
+    <mat-form-field *ngIf="datagroup">
+      <mat-label>เลือกกลุ่มเรียน</mat-label>
+      <mat-select>
+        <mat-option
+          *ngFor="let i of datagroup.record; let x = index"
+          [value]="i.study_group_name"
+        >
+          {{ i.study_group_name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  &nbsp; &nbsp; &nbsp; &nbsp;สาขาวิชา :
+  <br />
+  &nbsp; &nbsp; &nbsp; &nbsp;อาจารย์ที่ปรึกษา :
+</div>
+<div>
+  <button mat-icon-button color="warn">
+    <mat-icon (click)="openDialog1()"> add_box </mat-icon>
+  </button>
+</div>

@@ -1,0 +1,38 @@
+<mat-dialog-content>
+  <p>เพิ่มกลุ่มเรียน</p>
+  <mat-form-field *ngIf="datamajor">
+    <mat-label>เลือกสาขาวิชา</mat-label>
+    <mat-select>
+      <mat-option
+        *ngFor="let i of datamajor.record; let x = index"
+        [value]="i.name_th"
+        (click)="namegroupch(i.acronym, i.code, i.name_th)"
+      >
+        {{ i.name_th }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br />
+
+  <mat-form-field *ngIf="mjcodeData">
+    <mat-label>เลือกกลุ่มเรียน</mat-label>
+    <mat-select>
+      <mat-option
+        *ngFor="let i of mjcodeData.record; let x = index"
+        [value]="i.study_group_name"
+        (click)="getIdGroup(i.study_group_id)"
+      >
+        {{ i.study_group_name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <p>อาจารย์ที่ปรึกษา: {{ ad }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-stroked-button color="primary" (click)="save()">
+    ตกลง
+  </button>
+  <button mat-stroked-button mat-dialog-close color="warn">ยกเลิก</button>
+</mat-dialog-actions>

@@ -1,0 +1,34 @@
+<mat-dialog-content>
+  <p>เพิ่มกลุ่มเรียน</p>
+  <mat-form-field *ngIf="datamajor" style="width: 100%;">
+    <mat-label>เลือกสาขาวิชา</mat-label>
+    <mat-select>
+      <mat-option
+        *ngFor="let i of datamajor.record; let x = index"
+        [value]="i.name_th"
+        (click)="namegroupch(i.acronym, i.code, i.name)"
+      >
+        {{ i.name_th }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br />
+
+  <span> {{ namegroup }}</span
+  >&nbsp;&nbsp;.&nbsp;&nbsp;
+
+  <mat-form-field>
+    <input matInput placeholder="โปรดระบุรหัสกลุ่มเรียน" #a maxlength="5" />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button
+    mat-stroked-button
+    mat-dialog-close
+    color="primary"
+    (click)="save(a.value)"
+  >
+    ตกลง
+  </button>
+  <button mat-stroked-button mat-dialog-close color="warn">ยกเลิก</button>
+</mat-dialog-actions>
