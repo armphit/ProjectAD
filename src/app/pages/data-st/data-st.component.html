@@ -1,24 +1,85 @@
-<div>
-  <div>
-    &nbsp; &nbsp; &nbsp; &nbsp;กลุ่มเรียน :
-    <mat-form-field *ngIf="datagroup">
-      <mat-label>เลือกกลุ่มเรียน</mat-label>
-      <mat-select>
-        <mat-option
-          *ngFor="let i of datagroup.record; let x = index"
-          [value]="i.study_group_name"
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<mat-form-field *ngIf="datastupload">
+  <mat-label>เลือกกลุ่มเรียน</mat-label>
+  <mat-select>
+    <mat-option
+      *ngFor="let i of datastupload.record; let x = index"
+      [value]="i.study_group_name"
+      (click)="ongetmajor_and_ad(i.name_th, i.name, i.study_group_id)"
+    >
+      {{ i.study_group_name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp; สาขาวิชา : {{ major1 }}<br />
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;อาจารย์ที่ปรึกษา : {{ ad1 }} &nbsp;
+<br /><br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-primary btn-sm">
+  <i class="fa fa-camera-retro fa-lg"></i>&nbsp; เพิ่มข้อมูลส่วนตัว
+</button>
+
+<mat-form-field
+  class="example-full-width"
+  style="float: right;width: 500px;padding-right: 50px;"
+>
+  <input matInput placeholder="ค้นหา" #se_st />
+  <mat-icon matSuffix style="font-size: 1.2em">search</mat-icon>
+</mat-form-field>
+
+<br />
+<br />
+
+<table class="table table-striped" *ngIf="datastgroup != null">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">รหัสนักศึกษา</th>
+      <th scope="col">คำนำหน้า</th>
+      <th scope="col">ชื่อ</th>
+      <th scope="col">นามสกุล</th>
+      <th scope="col">สถานะ</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="
+        let i of onsearchstudent(datastgroup.record, se_st.value);
+        let x = index
+      "
+    >
+      <th scope="row">{{ x + 1 }}</th>
+      <td>{{ i.STUDENT_NO }}</td>
+      <td>{{ i.Prefix }}</td>
+      <td>{{ i.NAME }}</td>
+      <td>{{ i.LNAME }}</td>
+      <td>{{ i.StatusName }}</td>
+      <td>
+        <span>
+          <button type="button" class="btn btn-success btn-sm">
+            ประวัติส่วนตัว
+          </button></span
         >
-          {{ i.study_group_name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  &nbsp; &nbsp; &nbsp; &nbsp;สาขาวิชา :
-  <br />
-  &nbsp; &nbsp; &nbsp; &nbsp;อาจารย์ที่ปรึกษา :
-</div>
-<div>
-  <button mat-icon-button color="warn">
-    <mat-icon (click)="openDialog1()"> add_box </mat-icon>
-  </button>
-</div>
+      </td>
+      <td>
+        <span>
+          <button type="button" class="btn btn-warning btn-sm">
+            ตารางเรียน
+          </button></span
+        >
+      </td>
+      <td>
+        <span>
+          <button type="button" class="btn btn-info btn-sm">
+            ผลการศึกษา
+          </button></span
+        >
+      </td>
+    </tr>
+  </tbody>
+</table>

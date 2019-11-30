@@ -1,5 +1,5 @@
 <mat-dialog-content>
-  <p>เพิ่มกลุ่มเรียน</p>
+  <p>แก้ไขอาจารย์</p>
   <mat-form-field *ngIf="datamajor">
     <mat-label>เลือกสาขาวิชา</mat-label>
     <mat-select>
@@ -26,7 +26,15 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <br />
 
+  <section class="example-section">
+    สถานะ : &nbsp;
+    <mat-checkbox class="example-margin">อาจารย์ที่ปรึกษา</mat-checkbox>
+    &nbsp;&nbsp;
+    <mat-checkbox class="example-margin">หัวหน้าสาขา</mat-checkbox>
+  </section>
+  <br />
   <p>อาจารย์ที่ปรึกษา: {{ ad }}</p>
 </mat-dialog-content>
 

@@ -12,7 +12,7 @@
       <mat-icon matSuffix style="font-size: 1.2em">search</mat-icon>
     </mat-form-field>
     <br /><br />
-    <table class="table" *ngIf="datagroupchange1 != null">
+    <table class="table table-striped" *ngIf="datagroupchange1 != null">
       <thead class="thead-dark">
         <tr>
           <th scope="col"></th>
@@ -35,7 +35,13 @@
           <td>{{ i.name_th }}</td>
           <td>
             <span>
-              <button mat-button color="link">
+              <button
+                mat-button
+                color="link"
+                (click)="
+                  updategroup(i.name_th, i.study_group_name, i.study_group_id)
+                "
+              >
                 <mat-icon> update </mat-icon>
               </button></span
             >
@@ -53,44 +59,9 @@
         </tr>
       </tbody>
     </table>
-
-    <!-- <table class="table" *ngIf="datagroupchange != null">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col"></th>
-          <th scope="col">กลุ่มเรียน</th>
-          <th scope="col">อาจารย์ที่ปรึกษา</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let i of datagroupchange.record; let x = index">
-          <th scope="row">{{ x + 1 }}</th>
-          <td>
-            {{ i.study_group_name }}
-          </td>
-          <td>{{ i.name }}</td>
-          <td>
-            <span>
-              <button mat-button color="link">
-                <mat-icon> update </mat-icon>
-              </button></span
-            >
-
-            <span>
-              <button
-                mat-button
-                color="warn"
-                (click)="deletegroup(i.study_group_id)"
-              >
-                <mat-icon> delete </mat-icon>
-              </button></span
-            >
-          </td>
-        </tr>
-      </tbody>
-    </table> -->
   </mat-tab>
+
+  <!-- ************************************************************************************************************************ -->
 
   <mat-tab label="จัดการอาจารย์">
     <button mat-icon-button color="primary" (click)="addprefix()">
@@ -100,10 +71,10 @@
       class="example-full-width"
       style="float: right;width: 500px;padding-right: 50px;"
     >
-      <input matInput placeholder="ค้นหา" />
+      <input matInput placeholder="ค้นหา" #se_ad />
       <mat-icon matSuffix style="font-size: 1.2em">search</mat-icon>
     </mat-form-field>
-    <table class="table" *ngIf="datagroup != null">
+    <table class="table table-striped" *ngIf="datagroup != null">
       <thead class="thead-dark">
         <tr>
           <th scope="col"></th>
@@ -114,7 +85,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let i of datagroup.record; let x = index">
+        <tr
+          *ngFor="
+            let i of onsearchadvisor(datagroup.record, se_ad.value);
+            let x = index
+          "
+        >
           <th scope="row">{{ x + 1 }}</th>
           <td>
             {{ i.study_group_name }}
@@ -130,11 +106,18 @@
                 <mat-icon> update </mat-icon>
               </button></span
             >
+            <span>
+              <button mat-button color="warn" (click)="deletead(i.id_ad)">
+                <mat-icon> delete </mat-icon>
+              </button></span
+            >
           </td>
         </tr>
       </tbody>
     </table>
   </mat-tab>
+
+  <!-- ************************************************************************************************************************ -->
 
   <mat-tab label="จัดการข้อมูลนักศึกษา">
     <div class="col-xs-4">
@@ -157,10 +140,22 @@
         <br />&nbsp;&nbsp;&nbsp;&nbsp;อาจารย์ที่ปรึกษา : {{ ad1 }} &nbsp;
 
         <br /><br />
-        &nbsp;&nbsp;<input type="file" (change)="onUpload($event)" />
+        &nbsp;&nbsp;<input
+          type="file"
+          (change)="onUpload($event)"
+          [hidden]="datastgroup"
+        />
+        <mat-form-field
+          [hidden]="!datastgroup"
+          class="example-full-width"
+          style="float: right;width: 500px;padding-right: 50px;"
+        >
+          <input matInput placeholder="ค้นหา" #se_st />
+          <mat-icon matSuffix style="font-size: 1.2em">search</mat-icon>
+        </mat-form-field>
         <br />
         <br />
-        <table class="table" *ngIf="datastudent != null">
+        <table class="table table-striped" *ngIf="datastgroup != null">
           <thead class="thead-dark">
             <tr>
               <th scope="col"></th>
@@ -168,20 +163,23 @@
               <th scope="col">คำนำหน้า</th>
               <th scope="col">ชื่อ</th>
               <th scope="col">นามสกุล</th>
-              <th scope="col">สาขาวิชา</th>
-              <th scope="col">อาจารย์ที่ปรึกษา</th>
+              <th scope="col">สถานะ</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let i of datastudent.record; let x = index">
+            <tr
+              *ngFor="
+                let i of onsearchstudent(datastgroup.record, se_st.value);
+                let x = index
+              "
+            >
               <th scope="row">{{ x + 1 }}</th>
               <td>{{ i.STUDENT_NO }}</td>
               <td>{{ i.Prefix }}</td>
               <td>{{ i.NAME }}</td>
               <td>{{ i.LNAME }}</td>
-              <td>{{ i.name_th }}</td>
-              <td>{{ i.name }}</td>
+              <td>{{ i.StatusName }}</td>
               <td>
                 <span>
                   <button mat-button color="link">

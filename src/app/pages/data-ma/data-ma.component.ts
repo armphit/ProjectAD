@@ -24,6 +24,7 @@ export class DataMaComponent implements OnInit {
   public ad1: any = null;
   public major1: any = null;
   public idgroup1: any = null;
+  public datastgroup: any = null;
 
   public datagroupchange1: any = null;
 
@@ -64,8 +65,7 @@ export class DataMaComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log("dialog was close");
-
-      this.ongetprefix();
+      this.ongetgroupchange1();
     });
   }
 
@@ -89,8 +89,7 @@ export class DataMaComponent implements OnInit {
     this.idgroup1 = groupid;
     this.major1 = major;
     this.ad1 = ad;
-    console.log(this.major1);
-    console.log(this.ad1);
+    this.ongetstgroup(groupid);
   }
 
   public addnewgroup() {
@@ -135,6 +134,7 @@ export class DataMaComponent implements OnInit {
   public insertxlsx(listStudent: Array<any>) {
     for (let i = 1; i < listStudent.length; i++) {
       let data4 = { st_group: this.idgroup1 };
+
       this.http
         .get(
           this.rootApi +
@@ -144,7 +144,9 @@ export class DataMaComponent implements OnInit {
             JSON.stringify(data4)
         )
         .subscribe((data: any) => {
-          // console.log(data);
+          if (data.error.errorInfo[2].includes("Duplicate entry")) {
+            Swal.fire("ข้อมูลซ่ำ", "", "error");
+          }
         });
     }
   }
@@ -197,12 +199,78 @@ export class DataMaComponent implements OnInit {
       return [
         ...array.filter(
           value => value.study_group_name.indexOf(textsearch) > -1
-        )
+        ),
+        ...array.filter(value => value.name_th.indexOf(textsearch) > -1)
       ];
     } else {
       return array;
     }
   };
+  public ongetstgroup(groupid: any = null) {
+    this.datastgroup = null;
+    this.http
+      .get(this.rootApi + `select/selectstudentgroup.php?data=` + groupid)
+      .subscribe((data: any) => {
+        if (data.record != null) {
+          this.datastgroup = data;
+        } else {
+          this.datastgroup = null;
+        }
+      });
+  }
+  public updategroup(name_th, study_group_name, study_group_id) {
+    this.app_service.name_th = name_th;
+    this.app_service.study_group_name = study_group_name;
+    this.app_service.study_group_id = study_group_id;
 
+    let dialogRef = this.test.open(DiApComponent, { width: "500" });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log("dialog was close");
+      this.ongetgroupchange1();
+    });
+  }
+  public onsearchadvisor = (array: any, textsearch: string) => {
+    if (textsearch.length > 0) {
+      return [
+        ...array.filter(
+          value => value.study_group_name.indexOf(textsearch) > -1
+        ),
+        ...array.filter(value => value.name.indexOf(textsearch) > -1)
+      ];
+    } else {
+      return array;
+    }
+  };
+  public deletead(id_ad) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      // icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then(result => {
+      if (result.value) {
+        this.http
+          .get(this.rootApi + `delete/deletead.php?id_ad=` + id_ad)
+          .subscribe((data: any) => {});
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        console.log(result);
+      }
+    });
+  }
+  public onsearchstudent = (array: any, textsearch: string) => {
+    if (textsearch.length > 0) {
+      return [
+        ...array.filter(value => value.STUDENT_NO.indexOf(textsearch) > -1),
+        ...array.filter(value => value.NAME.indexOf(textsearch) > -1),
+        ...array.filter(value => value.LNAME.indexOf(textsearch) > -1)
+      ];
+    } else {
+      return array;
+    }
+  };
   ngOnInit() {}
 }

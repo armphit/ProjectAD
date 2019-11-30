@@ -16,6 +16,7 @@ export class DiObComponent implements OnInit {
   public codeaddgroup: any = null;
   public namegroup: any = "ยังไม่ได้เลือก";
   public datagroupchange: any = null;
+  inputgroup: string;
   constructor(
     public http: HttpClient,
     public dialogRef: MatDialogRef<DiObComponent>,
@@ -35,7 +36,6 @@ export class DiObComponent implements OnInit {
   public namegroupch(acronym: any, code: any, name: any) {
     this.namegroup = acronym;
     this.onmjcode(code, acronym);
-    console.log(code);
   }
   public onmjcode(code: any, acronym: any) {
     let data2 = {
@@ -43,7 +43,6 @@ export class DiObComponent implements OnInit {
     };
     this.acronymaddgroup = acronym;
     this.codeaddgroup = code;
-    console.log(JSON.stringify(data2));
     this.http
       .get(
         this.rootApi +
@@ -60,14 +59,25 @@ export class DiObComponent implements OnInit {
       study_group_name: this.acronymaddgroup + "." + a,
       mj_code: this.codeaddgroup
     };
-    this.http
-      .get(
-        this.rootApi + `insert/insertgroup.php?data=` + JSON.stringify(data3)
-      )
-      .subscribe((data: any) => {
-        this.dialogRef.close("SAVE JA");
-        Swal.fire("บันทึกเสร็จสิ้น", "", "success");
-      });
+    if (data3.study_group_name.includes("null.") || a == "") {
+      Swal.fire("โปรดระบุข้อมูล", "", "error");
+    } else {
+      this.http
+        .get(
+          this.rootApi + `insert/insertgroup.php?data=` + JSON.stringify(data3)
+        )
+        .subscribe((data: any) => {
+          if (data.result == true) {
+            this.dialogRef.close("SAVE JA");
+            Swal.fire("บันทึกเสร็จสิ้น", "", "success");
+          } else {
+            if (data.record.errorInfo[2].includes("Duplicate entry")) {
+              Swal.fire("ข้อมูลซ่ำ", "", "error");
+            }
+          }
+          console.log(data3);
+        });
+    }
   }
   save1() {
     Swal.fire("บันทึกเสร็จสิ้น", "", "success");

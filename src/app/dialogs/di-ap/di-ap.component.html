@@ -1,13 +1,28 @@
-<p>เพิ่มคำนำหน้า</p>
 <mat-dialog-content>
+  <p>แก้ไขกลุ่มเรียน</p>
+  สาขาวิชา :
+  {{ name_th }}
+  <br /><br />
   <mat-form-field>
-    <input matInput placeholder="คำนำหน้า" #a />
+    <input
+      matInput
+      placeholder="โปรดระบุรหัสกลุ่มเรียน"
+      #a
+      maxlength="10"
+      value="{{ study_group_name }}"
+    />
   </mat-form-field>
 </mat-dialog-content>
-
 <mat-dialog-actions>
-  <button mat-stroked-button color="primary" (click)="save(a.value)">
+  <button
+    mat-stroked-button
+    mat-dialog-close
+    color="primary"
+    (click)="save(a.value)"
+  >
     ตกลง
   </button>
-  <button mat-stroked-button mat-dialog-close color="warn">ยกเลิก</button>
-</mat-dialog-actions>
+  <button mat-stroked-button mat-dialog-close color="warn">
+    ยกเลิก
+  </button></mat-dialog-actions
+>
